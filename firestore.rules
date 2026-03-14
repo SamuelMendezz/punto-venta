@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Since this is a POS system where devices are authenticated by the owner/admin,
+    // and staff use PINs locally, we allow all authenticated devices to read/write.
+    // In a production environment with multiple roles logging in via Firebase Auth,
+    // these rules would be more granular.
+
+    match /{document=**} {
+      allow read, write: if isAuthenticated();
+    }
+  }
+}

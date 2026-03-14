@@ -1,0 +1,145 @@
+{
+  "entities": {
+    "settings": {
+      "title": "Settings",
+      "description": "Global restaurant settings",
+      "type": "object",
+      "properties": {
+        "restaurantName": { "type": "string" },
+        "logoUrl": { "type": "string" },
+        "primaryColor": { "type": "string" },
+        "taxRate": { "type": "number" },
+        "currency": { "type": "string" }
+      },
+      "required": ["restaurantName", "primaryColor"]
+    },
+    "category": {
+      "title": "Category",
+      "description": "Menu category",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "type": "number" },
+        "color": { "type": "string" }
+      },
+      "required": ["name", "order"]
+    },
+    "product": {
+      "title": "Product",
+      "description": "Menu item",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "imageUrl": { "type": "string" },
+        "categoryId": { "type": "string" },
+        "available": { "type": "boolean" },
+        "prepTime": { "type": "number" },
+        "printer": { "type": "string" }
+      },
+      "required": ["name", "price", "categoryId", "available"]
+    },
+    "zone": {
+      "title": "Zone",
+      "description": "Restaurant area",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "order": { "type": "number" }
+      },
+      "required": ["name", "order"]
+    },
+    "table": {
+      "title": "Table",
+      "description": "Restaurant table",
+      "type": "object",
+      "properties": {
+        "zoneId": { "type": "string" },
+        "number": { "type": "string" },
+        "capacity": { "type": "number" },
+        "shape": { "type": "string", "enum": ["round", "square", "rectangle"] },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "status": { "type": "string", "enum": ["available", "occupied", "dirty"] }
+      },
+      "required": ["zoneId", "number", "capacity", "shape", "x", "y", "status"]
+    },
+    "user": {
+      "title": "User",
+      "description": "Staff member",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "manager", "cashier", "waiter", "kitchen"] },
+        "pin": { "type": "string" },
+        "photoUrl": { "type": "string" },
+        "active": { "type": "boolean" }
+      },
+      "required": ["name", "role", "pin", "active"]
+    },
+    "order": {
+      "title": "Order",
+      "description": "Customer order",
+      "type": "object",
+      "properties": {
+        "tableId": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "paid", "cancelled"] },
+        "total": { "type": "number" },
+        "serverId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["tableId", "status", "total", "serverId", "createdAt", "updatedAt"]
+    },
+    "orderItem": {
+      "title": "Order Item",
+      "description": "Item within an order",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "productId": { "type": "string" },
+        "name": { "type": "string" },
+        "price": { "type": "number" },
+        "quantity": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "preparing", "ready", "served"] },
+        "notes": { "type": "string" }
+      },
+      "required": ["orderId", "productId", "name", "price", "quantity", "status"]
+    }
+  },
+  "firestore": {
+    "settings/{settingId}": {
+      "schema": { "$ref": "#/entities/settings" },
+      "description": "Global settings"
+    },
+    "categories/{categoryId}": {
+      "schema": { "$ref": "#/entities/category" },
+      "description": "Menu categories"
+    },
+    "products/{productId}": {
+      "schema": { "$ref": "#/entities/product" },
+      "description": "Menu items"
+    },
+    "zones/{zoneId}": {
+      "schema": { "$ref": "#/entities/zone" },
+      "description": "Restaurant zones"
+    },
+    "tables/{tableId}": {
+      "schema": { "$ref": "#/entities/table" },
+      "description": "Restaurant tables"
+    },
+    "users/{userId}": {
+      "schema": { "$ref": "#/entities/user" },
+      "description": "Staff members"
+    },
+    "orders/{orderId}": {
+      "schema": { "$ref": "#/entities/order" },
+      "description": "Customer orders"
+    },
+    "orders/{orderId}/items/{itemId}": {
+      "schema": { "$ref": "#/entities/orderItem" },
+      "description": "Items in an order"
+    }
+  }
+}
